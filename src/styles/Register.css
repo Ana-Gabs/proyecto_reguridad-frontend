@@ -1,0 +1,117 @@
+/* Archivo Register.css */
+
+/* Contenedor principal */
+.registro-container {
+  background-color: var(--background-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative; 
+}
+
+/* Cabecera de la página */
+.registro-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.registro-header .back-arrow {
+  cursor: pointer;
+  color: var(--primary-color);
+  font-size: 40px; 
+  transition: transform 0.2s ease;
+}
+
+.registro-header .back-arrow:hover {
+  transform: scale(1.1); 
+}
+
+/* Caja principal del formulario */
+.registro-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.intro-text h1 {
+  color: var(--primary-color);
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.subtitulo-letrero {
+  color: var(--text-secondary-color);
+  font-size: 18px;
+}
+
+/* Estilo para los campos de formulario */
+.MuiTextField-root {
+  margin-bottom: 20px;
+}
+
+/* Estilo para el botón de envío */
+.MuiButton-contained {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 0;
+  text-transform: none;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.MuiButton-contained:hover {
+  background-color: var(--primary-color-variant); 
+}
+
+/* Mensajes de error y éxito */
+.mensaje {
+  color: var(--error-color);
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* Estilo del enlace de "¿Ya tienes cuenta?" */
+.subtitulo-letrero a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.subtitulo-letrero a:hover {
+  text-decoration: underline;
+}
+
+/* Alertas (Ej. mensajes de validación) */
+.alert-box {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: var(--warning-color);
+  color: white;
+}
+
+/* Estilos para los campos de contraseña */
+.password-field {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Estilos adicionales de texto */
+.text-primary {
+  color: var(--text-primary-color);
+}
+
+.text-secondary {
+  color: var(--text-secondary-color);
+}
