@@ -100,7 +100,7 @@ const Login = () => {
 
                 {step === "login" && (
                     <form onSubmit={handleLogin}>
-                        <Grid item xs={12} sm={12} md={10} lg={1} container justifyContent="center" alignItems="center" direction="column">
+                        <Grid size={{xs:12, sm:10, md:8, lg:9}} container justifyContent="center" alignItems="center" direction="column">
                             <TextField
                                 label="Usuario / Correo"
                                 name="emailOrUsername"
@@ -112,7 +112,7 @@ const Login = () => {
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={10} md={8} lg={3}>
+                        <Grid size={{xs:12, sm:10, md:8, lg:9}}>
                             <PasswordField
                                 label="Contraseña"
                                 name="password"
@@ -124,12 +124,12 @@ const Login = () => {
                         </Grid>
 
                         <Grid container spacing={2} justifyContent="center">
-                            <Grid item xs={12} sm={6}>
+                            <Grid size={{xs:12, sm:6}} >
                                 <Button type="submit" variant="contained" className="MuiButton-contained" fullWidth>
                                     Iniciar sesión
                                 </Button>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            <Grid size={{xs:12, sm:6}} >
                                 <Button variant="contained" className="MuiButton-contained" fullWidth onClick={handleRegister}>
                                     Registrarse
                                 </Button>
@@ -152,7 +152,7 @@ const Login = () => {
                 {step === "otp" && (
                     <form onSubmit={verifyOTP}>
                         <Grid container spacing={3}>
-                            <Grid item xs={12}>
+                            <Grid size={{xs:12}}>
                                 <TextField
                                     label="Código OTP"
                                     name="otp"
@@ -164,7 +164,7 @@ const Login = () => {
                         </Grid>
 
                         <Grid container spacing={3} direction="column" justifyContent="flex-end" alignItems="center">
-                            <Grid item xs={12}>
+                            <Grid size={{xs:12}}>
                                 <Button type="submit" variant="contained" color="primary" fullWidth>
                                     Verificar
                                 </Button>

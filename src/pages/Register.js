@@ -1,3 +1,4 @@
+// ./pages/Register.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -8,6 +9,7 @@ import { isValidPassword, isPasswordMatch, PasswordField } from '../funccions/va
 import '../styles/Register.css';
 
 const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
+console.log(WEBSERVICE_IP);
 
 const Registro = () => {
     const navigate = useNavigate();
@@ -47,7 +49,8 @@ const Registro = () => {
         setMensaje('');
         setEmptyFields([]);
 
-        const camposVacios = validarCamposVacios(formData);
+        const camposVacios = validarCamposVacios(formData, setShowAlert, setEmptyFields);
+
         const nuevosErrores = {
             passwordError: isValidPassword(formData.password),
             confirmPasswordError: isPasswordMatch(formData.password, formData.confirmPassword),
@@ -56,13 +59,13 @@ const Registro = () => {
         setErrores(nuevosErrores);
 
         if (camposVacios.length > 0 || nuevosErrores.passwordError || nuevosErrores.confirmPasswordError) {
-            setEmptyFields(camposVacios);
             setMensaje('Por favor, corrige los errores antes de enviar el formulario.');
             return;
         }
 
         try {
             console.log("Enviando datos al backend:", formData);
+            console.log(WEBSERVICE_IP);
             const response = await fetch(`${WEBSERVICE_IP}/users/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -72,6 +75,7 @@ const Registro = () => {
             console.log("Código de respuesta:", response.status);
             const result = await response.json();
             console.log("Respuesta del backend:", result);
+            console.log(WEBSERVICE_IP);
 
             if (response.status === 201) {
                 setMensaje('Registro exitoso, redirigiendo...');
@@ -85,31 +89,22 @@ const Registro = () => {
         }
     };
 
+
     return (
         <div className="registro-container">
             <div className="registro-header">
                 <ArrowBackIcon className="back-arrow" onClick={handleBackClick} />
             </div>
-
-            {/* Box to center the form */}
             <Box
-                className="registro-box"
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center',
-                }}
-            >
+                className="registro-box">
                 <div className="intro-text">
                     <h1>¡Empezar!</h1>
                     <h3 className="subtitulo-letrero">Regístrate para continuar</h3>
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                    <Grid container spacing={3} justifyContent="center"> {/* Center the grid items */}
-                        <Grid item xs={12} sm={8} md={6}>
+                    <Grid container spacing={3} justifyContent="center" alignItems="center" columns={12}>
+                        <Grid size={{xs: 12, sm: 8, md: 6, lg: 6}}>
                             <TextField
                                 label="Nombre de usuario"
                                 name="username"
@@ -120,7 +115,7 @@ const Registro = () => {
                                 helperText={emptyFields.includes('username') ? 'Campo obligatorio' : errores.usernameError}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={8} md={6}>
+                        <Grid size={{xs: 12, sm: 8, md: 6, lg: 6}}>
                             <TextField
                                 label="Correo Electrónico"
                                 name="email"
@@ -131,7 +126,7 @@ const Registro = () => {
                                 helperText={emptyFields.includes('email') ? 'Campo obligatorio' : errores.emailError}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={8} md={6}>
+                        <Grid size={{xs: 12, sm: 8, md: 6, lg: 6}}>
                             <PasswordField
                                 label="Contraseña"
                                 name="password"
@@ -141,7 +136,7 @@ const Registro = () => {
                                 helperText={errores.passwordError || (emptyFields.includes('password') ? 'Campo obligatorio' : '')}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={8} md={6}>
+                        <Grid size={{xs: 12, sm: 8, md: 6, lg: 6}}>
                             <PasswordField
                                 label="Confirmar Contraseña"
                                 name="confirmPassword"
@@ -151,17 +146,16 @@ const Registro = () => {
                                 helperText={errores.confirmPasswordError || (emptyFields.includes('confirmPassword') ? 'Campo obligatorio' : '')}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid size={{xs: 12, sm: 8, md: 6, lg: 6}}>
                             <Button type="submit" variant="contained" color="primary" fullWidth>
                                 Registrarse
                             </Button>
                         </Grid>
                     </Grid>
-
                     {mensaje && <p className="mensaje">{mensaje}</p>}
                 </form>
 
-                <div >
+                <div>
                     <h5 className="subtitulo-letrero">
                         ¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a>
                     </h5>
@@ -174,3 +168,5 @@ const Registro = () => {
 };
 
 export default Registro;
+
+

@@ -1,3 +1,4 @@
+// .funciones/EmpatyFields.js
 export function validarCamposVacios(formData, setShowAlert, setEmptyFields) {
     // Verificar qué campos del formulario están vacíos
     const camposVacios = Object.entries(formData).filter(([key, value]) => value === '').map(([key]) => key);
