@@ -97,14 +97,12 @@ const Registro = () => {
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center', // Center horizontally
-                    justifyContent: 'center', // Center vertically
-                    height: '100vh', // Full height
-                    padding: '20px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     textAlign: 'center',
                 }}
             >
-                <div className="intro-text" style={{ marginBottom: '20px' }}>
+                <div className="intro-text">
                     <h1>¡Empezar!</h1>
                     <h3 className="subtitulo-letrero">Regístrate para continuar</h3>
                 </div>
@@ -163,8 +161,10 @@ const Registro = () => {
                     {mensaje && <p className="mensaje">{mensaje}</p>}
                 </form>
 
-                <div style={{ padding: '10px' }}>
-                    <h5>¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a></h5>
+                <div >
+                    <h5 className="subtitulo-letrero">
+                        ¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a>
+                    </h5>
                 </div>
 
                 <AlertBox showAlert={showAlert} setShowAlert={setShowAlert} />
