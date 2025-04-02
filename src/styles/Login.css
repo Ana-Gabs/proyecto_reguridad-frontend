@@ -59,6 +59,7 @@
 /* Estilo para los campos de formulario */
 .MuiTextField-root {
     margin-bottom: 20px;
+    width: 100%; 
 }
 
 .password-field {
@@ -66,15 +67,15 @@
     width: 100%;
 }
 
-/* Estilo para el botón de envío */
 .MuiButton-contained {
     background-color: var(--primary-color);
     color: white;
-    padding: 12px 0;
+    padding: 12px 0px; /* Asegura espacio en los lados */
     text-transform: none;
     font-weight: bold;
-    border-radius: 8px;
+    border-radius: 30px;
     transition: background-color 0.3s ease;
+    min-width: 120px;
 }
 
 .MuiButton-contained:hover {
@@ -119,3 +120,4 @@
 .text-secondary {
     color: var(--text-secondary-color);
 }
+

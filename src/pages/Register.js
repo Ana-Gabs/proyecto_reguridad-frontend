@@ -5,9 +5,7 @@ import { Grid, Box, Button, TextField } from '@mui/material';
 import { validarCamposVacios } from '../funccions/EmptyFields';
 import { AlertBox } from '../funccions/AlertBox';
 import { isValidPassword, isPasswordMatch, PasswordField } from '../funccions/validations/Password';
-import { isValidPhoneNumber } from '../funccions/validations/Phone';
 import '../styles/Register.css';
-
 
 const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
 
@@ -15,14 +13,9 @@ const Registro = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
-        nombre: '',
-        appaterno: '',
-        apmaterno: '',
-        telefono: '',
         email: '',
         password: '',
         confirmPassword: '',
-        rol: 'common_user'
     });
 
     const [mensaje, setMensaje] = useState('');
@@ -30,10 +23,12 @@ const Registro = () => {
     const [emptyFields, setEmptyFields] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
 
+    // Maneja el click en el botón de "Atrás"
     const handleBackClick = () => {
         navigate(-1);
     };
 
+    // Maneja el cambio de valores en el formulario
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -45,33 +40,33 @@ const Registro = () => {
             newErrors.passwordError = isValidPassword(value);
         } else if (name === 'confirmPassword') {
             newErrors.confirmPasswordError = isPasswordMatch(formData.password, value);
-        } else if (name === 'telefono') {
-            newErrors.telefonoError = isValidPhoneNumber(value);
         }
 
         setErrores(newErrors);
     };
 
+    // Maneja el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMensaje('');
         setEmptyFields([]);
 
         // Validar campos vacíos
-        const camposVacios = validarCamposVacios(formData, setShowAlert, setEmptyFields);
+        const camposVacios = validarCamposVacios(formData);
         const nuevosErrores = {
             passwordError: isValidPassword(formData.password),
             confirmPasswordError: isPasswordMatch(formData.password, formData.confirmPassword),
-            telefonoError: isValidPhoneNumber(formData.telefono),
         };
 
         setErrores(nuevosErrores);
 
-        if (camposVacios || nuevosErrores.passwordError || nuevosErrores.confirmPasswordError || nuevosErrores.telefonoError) {
+        // Si hay errores, muestra mensaje y no envíes los datos
+        if (camposVacios || nuevosErrores.passwordError || nuevosErrores.confirmPasswordError) {
             setMensaje('Por favor, corrige los errores antes de enviar el formulario.');
             return;
         }
 
+        // Si todo está correcto, intenta enviar los datos
         try {
             console.log("Enviando datos al backend:", formData);
             const response = await fetch(`${WEBSERVICE_IP}/users/register`, {
@@ -117,8 +112,8 @@ const Registro = () => {
                                 value={formData.username}
                                 onChange={handleChange}
                                 fullWidth
-                                error={emptyFields.includes('username')}
-                                helperText={emptyFields.includes('username') ? 'Campo obligatorio' : ''}
+                                error={emptyFields.includes('username') || !!errores.usernameError}
+                                helperText={emptyFields.includes('username') ? 'Campo obligatorio' : errores.usernameError}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -128,8 +123,8 @@ const Registro = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 fullWidth
-                                error={emptyFields.includes('email')}
-                                helperText={emptyFields.includes('email') ? 'Campo obligatorio' : ''}
+                                error={emptyFields.includes('email') || !!errores.emailError}
+                                helperText={emptyFields.includes('email') ? 'Campo obligatorio' : errores.emailError}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -158,6 +153,7 @@ const Registro = () => {
                             </Button>
                         </Grid>
                     </Grid>
+
                     {mensaje && <p className="mensaje">{mensaje}</p>}
                 </form>
 

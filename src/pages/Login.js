@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Grid, Box, Button, TextField } from "@mui/material";
+import { QRCodeSVG } from "qrcode.react";
 import { PasswordField } from "../funccions/validations/Password";
 import "../styles/Login.css";
 
@@ -12,54 +14,75 @@ const Login = () => {
     const [formData, setFormData] = useState({
         emailOrUsername: "",
         password: "",
+        otp: "",
     });
     const [mensaje, setMensaje] = useState("");
     const [errores, setErrores] = useState({});
+    const [step, setStep] = useState("login");
+    const [secretUrl, setSecretUrl] = useState("");
 
-    const handleBackClick = () => {
-        navigate(-1);
-    };
+    const handleBackClick = () => navigate(-1);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         setMensaje("");
-        setErrores({});
-
-        if (!formData.emailOrUsername.trim() || !formData.password.trim()) {
-            setMensaje("Por favor, completa todos los campos.");
-            return;
-        }
 
         try {
-            const response = await fetch(`${WEBSERVICE_IP}/users/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+            const res = await axios.post(`${WEBSERVICE_IP}/register`, {
+                email: formData.emailOrUsername,
+                password: formData.password,
+            });
+            setSecretUrl(res.data.secret);
+            setStep("qr");
+        } catch (error) {
+            setMensaje("Error al registrar usuario.");
+        }
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setMensaje("");
+
+        try {
+            const res = await axios.post(`${WEBSERVICE_IP}/login`, {
+                email: formData.emailOrUsername,
+                password: formData.password,
             });
 
-            const result = await response.json();
-
-            if (response.ok) {
-                // Guardar token y usuario en localStorage
-                localStorage.setItem("token", result.token);
-                localStorage.setItem("user", JSON.stringify(result.user));
-
+            if (res.data.requiresMFA) {
+                setStep("otp");
+            } else if (res.data.token) {
+                localStorage.setItem("token", res.data.token);
                 navigate("/home");
-            } else {
-                // Manejar errores del backend
-                setErrores(result.intDataMessage ? result.intDataMessage[0] : {});
-                setMensaje(result.error || "Error al iniciar sesión.");
             }
         } catch (error) {
-            setMensaje("Error de conexión. Inténtalo de nuevo más tarde.");
+            setMensaje("Error al iniciar sesión.");
+        }
+    };
+
+    const verifyOTP = async (e) => {
+        e.preventDefault();
+        setMensaje("");
+
+        try {
+            const res = await axios.post(`${WEBSERVICE_IP}/verify-otp`, {
+                email: formData.emailOrUsername,
+                token: formData.otp,
+            });
+
+            if (res.data.success) {
+                localStorage.setItem("token", res.data.token);
+                navigate("/home");
+            } else {
+                setMensaje("Código OTP incorrecto.");
+            }
+        } catch (error) {
+            setMensaje("Error al verificar OTP.");
         }
     };
 
@@ -75,9 +98,9 @@ const Login = () => {
                     <h3 className="subtitulo-letrero">Inicia sesión para continuar</h3>
                 </div>
 
-                <form onSubmit={handleSubmit}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
+                {step === "login" && (
+                    <form onSubmit={handleLogin}>
+                        <Grid item xs={12} sm={12} md={10} lg={1} container justifyContent="center" alignItems="center" direction="column">
                             <TextField
                                 label="Usuario / Correo"
                                 name="emailOrUsername"
@@ -88,7 +111,8 @@ const Login = () => {
                                 helperText={errores.credentials}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+
+                        <Grid item xs={12} sm={10} md={8} lg={3}>
                             <PasswordField
                                 label="Contraseña"
                                 name="password"
@@ -98,14 +122,57 @@ const Login = () => {
                                 helperText={errores.credentials}
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <Button type="submit" variant="contained" color="primary" fullWidth>
-                                Iniciar sesión
-                            </Button>
+
+                        <Grid container spacing={2} justifyContent="center">
+                            <Grid item xs={12} sm={6}>
+                                <Button type="submit" variant="contained" className="MuiButton-contained" fullWidth>
+                                    Iniciar sesión
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Button variant="contained" className="MuiButton-contained" fullWidth onClick={handleRegister}>
+                                    Registrarse
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    {mensaje && <p className="mensaje">{mensaje}</p>}
-                </form>
+                        {mensaje && <p className="mensaje">{mensaje}</p>}
+                    </form>
+                )}
+
+                {step === "qr" && secretUrl && (
+                    <div style={{ textAlign: "center" }}>
+                        <QRCodeSVG value={secretUrl} />
+                        <p>Escanea este QR con Google Authenticator</p>
+                        <Button variant="contained" onClick={() => setStep("login")}>
+                            Regresar
+                        </Button>
+                    </div>
+                )}
+
+                {step === "otp" && (
+                    <form onSubmit={verifyOTP}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Código OTP"
+                                    name="otp"
+                                    value={formData.otp}
+                                    onChange={handleChange}
+                                    fullWidth
+                                />
+                            </Grid>
+                        </Grid>
+
+                        <Grid container spacing={3} direction="column" justifyContent="flex-end" alignItems="center">
+                            <Grid item xs={12}>
+                                <Button type="submit" variant="contained" color="primary" fullWidth>
+                                    Verificar
+                                </Button>
+                            </Grid>
+                        </Grid>
+                        {mensaje && <p className="mensaje">{mensaje}</p>}
+                    </form>
+                )}
 
                 <div style={{ padding: "10px", textAlign: "center" }}>
                     <h5 className="subtitulo-letrero">
