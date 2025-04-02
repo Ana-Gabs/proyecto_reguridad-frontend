@@ -5,7 +5,8 @@ import { Grid, Box, Button, TextField, CircularProgress, Typography } from "@mui
 import { PasswordField } from "../funccions/validations/Password"; // Assuming the custom password field is here.
 import "../styles/Login.css";
 
-const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
+//const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
+const WEBSERVICE_IP = "http://localhost:3001";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -56,30 +57,36 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        if (!validateForm()) return; // Validar antes de enviar la solicitud
-
-        setIsLoading(true);
-        setMensaje("");
-        setErrores({});
-
+        setIsLoading(true); // Empezar el estado de carga
+        setMensaje(""); // Limpiar mensaje previo
+        setErrores({});  // Limpiar errores previos
+    
         try {
             const res = await axios.post(`${WEBSERVICE_IP}/users/login`, {
                 emailOrUsername: formData.emailOrUsername,
                 password: formData.password,
             });
-
+    
+            // Log para revisar la respuesta
+            console.log(res.data);
+    
             if (res.data.requiresMFA) {
                 setStep("otp"); // Cambiar al paso OTP
             } else if (res.data.token) {
                 localStorage.setItem("token", res.data.token);
-                navigate("/home"); // Redirigir si el login fue exitoso
+                navigate("/home"); // Redirigir al home si el login fue exitoso
             }
         } catch (error) {
-            setIsLoading(false);
-            setMensaje("Error al iniciar sesión.");
-            console.error(error);
+            console.error("Error en la solicitud de login:", error);
+            setIsLoading(false);  // Desactivar el estado de carga
+            setMensaje("Error al iniciar sesión. Revisa la consola para más detalles.");
+            if (error.response) {
+                console.error("Detalles del error:", error.response.data);
+            }
+        } finally {
+            setIsLoading(false); 
         }
-    };
+    };    
 
     const verifyOTP = async (e) => {
         e.preventDefault();
@@ -89,10 +96,18 @@ const Login = () => {
         setErrores({});     
     
         try {
-            const res = await axios.post(`${WEBSERVICE_IP}/users/verify-otp`, {
-                email: formData.emailOrUsername,
-                token: formData.otp,
-            });
+            const res = await axios.post(`${WEBSERVICE_IP}/users/verify-otp`, 
+                {
+                  email: formData.emailOrUsername,
+                  token: formData.otp,
+                }, 
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+              
     
             if (res.data.success) {
                 localStorage.setItem("token", res.data.token); 
