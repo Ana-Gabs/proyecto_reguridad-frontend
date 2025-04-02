@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Grid, Box, Button, TextField } from '@mui/material';
-import { validarCamposVacios } from '../funccions/EmptyFields';
+import { validarCamposVacios } from '../funccions/EmptyFields'; // Asegúrate que esta función solo devuelva los campos vacíos.
 import { AlertBox } from '../funccions/AlertBox';
 import { isValidPassword, isPasswordMatch, PasswordField } from '../funccions/validations/Password';
 import '../styles/Register.css';
@@ -52,7 +52,7 @@ const Registro = () => {
         setEmptyFields([]);
 
         // Validar campos vacíos
-        const camposVacios = validarCamposVacios(formData);
+        const camposVacios = validarCamposVacios(formData); // Ahora devuelve los campos vacíos
         const nuevosErrores = {
             passwordError: isValidPassword(formData.password),
             confirmPasswordError: isPasswordMatch(formData.password, formData.confirmPassword),
@@ -60,8 +60,9 @@ const Registro = () => {
 
         setErrores(nuevosErrores);
 
-        // Si hay errores, muestra mensaje y no envíes los datos
-        if (camposVacios || nuevosErrores.passwordError || nuevosErrores.confirmPasswordError) {
+        // Si hay campos vacíos o errores de validación, muestra el mensaje de error
+        if (camposVacios.length > 0 || nuevosErrores.passwordError || nuevosErrores.confirmPasswordError) {
+            setEmptyFields(camposVacios); // Actualiza el estado con los campos vacíos
             setMensaje('Por favor, corrige los errores antes de enviar el formulario.');
             return;
         }
