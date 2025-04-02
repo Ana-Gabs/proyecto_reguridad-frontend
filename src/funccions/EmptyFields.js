@@ -16,5 +16,5 @@ export function validarCamposVacios(formData, setShowAlert, setEmptyFields) {
         setEmptyFields([]);
     }
 
-    return camposVacios.length > 0;
+    return camposVacios; // Asegúrate de devolver los campos vacíos
 }
