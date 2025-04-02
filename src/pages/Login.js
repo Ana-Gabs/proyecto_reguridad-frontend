@@ -94,7 +94,7 @@ const Login = () => {
 
             <Box className="login-box">
                 <div className="intro-text">
-                    <h1>¡Bienvenido de nuevo XDDDD!</h1>
+                    <h1>¡Bienvenido de nuevo!</h1>
                     <h3 className="subtitulo-letrero">Inicia sesión para continuar</h3>
                 </div>
 
