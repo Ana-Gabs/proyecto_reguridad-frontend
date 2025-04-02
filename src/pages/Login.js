@@ -5,7 +5,7 @@ import { Grid, Box, Button, TextField, CircularProgress } from "@mui/material";
 import { PasswordField } from "../funccions/validations/Password"; // Assuming the custom password field is here.
 import "../styles/Login.css";
 
-const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP || "http://localhost:3001";
+const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
 
 const Login = () => {
     const navigate = useNavigate();
@@ -32,8 +32,8 @@ const Login = () => {
         setMensaje("");
         
         try {
-            const res = await axios.post(`${WEBSERVICE_IP}/login`, {
-                email: formData.emailOrUsername,
+            const res = await axios.post(`${WEBSERVICE_IP}/users/login`, {
+                emailOrUsername: formData.emailOrUsername,
                 password: formData.password,
             });
 
