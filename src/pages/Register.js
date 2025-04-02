@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Grid, Box, Button, TextField } from '@mui/material';
-import { validarCamposVacios } from '../funccions/EmptyFields'; // Asegúrate que esta función solo devuelva los campos vacíos.
+import { validarCamposVacios } from '../funccions/EmptyFields';
 import { AlertBox } from '../funccions/AlertBox';
 import { isValidPassword, isPasswordMatch, PasswordField } from '../funccions/validations/Password';
 import '../styles/Register.css';
@@ -23,17 +23,14 @@ const Registro = () => {
     const [emptyFields, setEmptyFields] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
 
-    // Maneja el click en el botón de "Atrás"
     const handleBackClick = () => {
         navigate(-1);
     };
 
-    // Maneja el cambio de valores en el formulario
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
 
-        // Validaciones en tiempo real
         let newErrors = { ...errores };
 
         if (name === 'password') {
@@ -45,14 +42,12 @@ const Registro = () => {
         setErrores(newErrors);
     };
 
-    // Maneja el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMensaje('');
         setEmptyFields([]);
 
-        // Validar campos vacíos
-        const camposVacios = validarCamposVacios(formData); // Ahora devuelve los campos vacíos
+        const camposVacios = validarCamposVacios(formData);
         const nuevosErrores = {
             passwordError: isValidPassword(formData.password),
             confirmPasswordError: isPasswordMatch(formData.password, formData.confirmPassword),
@@ -60,14 +55,12 @@ const Registro = () => {
 
         setErrores(nuevosErrores);
 
-        // Si hay campos vacíos o errores de validación, muestra el mensaje de error
         if (camposVacios.length > 0 || nuevosErrores.passwordError || nuevosErrores.confirmPasswordError) {
-            setEmptyFields(camposVacios); // Actualiza el estado con los campos vacíos
+            setEmptyFields(camposVacios);
             setMensaje('Por favor, corrige los errores antes de enviar el formulario.');
             return;
         }
 
-        // Si todo está correcto, intenta enviar los datos
         try {
             console.log("Enviando datos al backend:", formData);
             const response = await fetch(`${WEBSERVICE_IP}/users/register`, {
@@ -98,15 +91,27 @@ const Registro = () => {
                 <ArrowBackIcon className="back-arrow" onClick={handleBackClick} />
             </div>
 
-            <Box className="registro-box">
-                <div className="intro-text" style={{ textAlign: 'center', marginBottom: '20px' }}>
+            {/* Box to center the form */}
+            <Box
+                className="registro-box"
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center', // Center horizontally
+                    justifyContent: 'center', // Center vertically
+                    height: '100vh', // Full height
+                    padding: '20px',
+                    textAlign: 'center',
+                }}
+            >
+                <div className="intro-text" style={{ marginBottom: '20px' }}>
                     <h1>¡Empezar!</h1>
                     <h3 className="subtitulo-letrero">Regístrate para continuar</h3>
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
+                    <Grid container spacing={3} justifyContent="center"> {/* Center the grid items */}
+                        <Grid item xs={12} sm={8} md={6}>
                             <TextField
                                 label="Nombre de usuario"
                                 name="username"
@@ -117,7 +122,7 @@ const Registro = () => {
                                 helperText={emptyFields.includes('username') ? 'Campo obligatorio' : errores.usernameError}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sm={8} md={6}>
                             <TextField
                                 label="Correo Electrónico"
                                 name="email"
@@ -128,7 +133,7 @@ const Registro = () => {
                                 helperText={emptyFields.includes('email') ? 'Campo obligatorio' : errores.emailError}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={8} md={6}>
                             <PasswordField
                                 label="Contraseña"
                                 name="password"
@@ -138,7 +143,7 @@ const Registro = () => {
                                 helperText={errores.passwordError || (emptyFields.includes('password') ? 'Campo obligatorio' : '')}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={8} md={6}>
                             <PasswordField
                                 label="Confirmar Contraseña"
                                 name="confirmPassword"
@@ -158,7 +163,7 @@ const Registro = () => {
                     {mensaje && <p className="mensaje">{mensaje}</p>}
                 </form>
 
-                <div style={{ padding: '10px', textAlign: 'center' }}>
+                <div style={{ padding: '10px' }}>
                     <h5>¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a></h5>
                 </div>
 
