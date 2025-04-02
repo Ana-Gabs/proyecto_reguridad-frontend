@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Grid, Box, Button, TextField } from "@mui/material";
-import { QRCodeSVG } from "qrcode.react";
-import { PasswordField } from "../funccions/validations/Password";
+import { Grid, Box, Button, TextField, CircularProgress } from "@mui/material";
+import { PasswordField } from "../funccions/validations/Password"; // Assuming the custom password field is here.
 import "../styles/Login.css";
 
 const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP || "http://localhost:3001";
@@ -18,8 +16,8 @@ const Login = () => {
     });
     const [mensaje, setMensaje] = useState("");
     const [errores, setErrores] = useState({});
-    const [step, setStep] = useState("login");
-    const [secretUrl, setSecretUrl] = useState("");
+    const [step, setStep] = useState("login"); // To handle login or OTP step
+    const [isLoading, setIsLoading] = useState(false); // To manage loading state
 
     const handleBackClick = () => navigate(-1);
 
@@ -28,26 +26,11 @@ const Login = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        setMensaje("");
-
-        try {
-            const res = await axios.post(`${WEBSERVICE_IP}/register`, {
-                email: formData.emailOrUsername,
-                password: formData.password,
-            });
-            setSecretUrl(res.data.secret);
-            setStep("qr");
-        } catch (error) {
-            setMensaje("Error al registrar usuario.");
-        }
-    };
-
     const handleLogin = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         setMensaje("");
-
+        
         try {
             const res = await axios.post(`${WEBSERVICE_IP}/login`, {
                 email: formData.emailOrUsername,
@@ -61,12 +44,14 @@ const Login = () => {
                 navigate("/home");
             }
         } catch (error) {
-            setMensaje("Error al iniciar sesión.");
+            setIsLoading(false);
+            setMensaje("Error al iniciar sesión. Verifique sus credenciales.");
         }
     };
 
     const verifyOTP = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         setMensaje("");
 
         try {
@@ -82,6 +67,7 @@ const Login = () => {
                 setMensaje("Código OTP incorrecto.");
             }
         } catch (error) {
+            setIsLoading(false);
             setMensaje("Error al verificar OTP.");
         }
     };
@@ -89,7 +75,7 @@ const Login = () => {
     return (
         <div className="login-container">
             <div className="login-header">
-                <ArrowBackIcon className="back-arrow" onClick={handleBackClick} />
+                <Button onClick={handleBackClick}>Back</Button>
             </div>
 
             <Box className="login-box">
@@ -100,7 +86,7 @@ const Login = () => {
 
                 {step === "login" && (
                     <form onSubmit={handleLogin}>
-                        <Grid size={{xs:12, sm:10, md:8, lg:9}} container justifyContent="center" alignItems="center" direction="column">
+                        <Grid container spacing={3} justifyContent="center" alignItems="center" direction="column">
                             <TextField
                                 label="Usuario / Correo"
                                 name="emailOrUsername"
@@ -110,9 +96,6 @@ const Login = () => {
                                 error={!!errores.credentials}
                                 helperText={errores.credentials}
                             />
-                        </Grid>
-
-                        <Grid size={{xs:12, sm:10, md:8, lg:9}}>
                             <PasswordField
                                 label="Contraseña"
                                 name="password"
@@ -124,14 +107,9 @@ const Login = () => {
                         </Grid>
 
                         <Grid container spacing={2} justifyContent="center">
-                            <Grid size={{xs:12, sm:6}} >
-                                <Button type="submit" variant="contained" className="MuiButton-contained" fullWidth>
-                                    Iniciar sesión
-                                </Button>
-                            </Grid>
-                            <Grid size={{xs:12, sm:6}} >
-                                <Button variant="contained" className="MuiButton-contained" fullWidth onClick={handleRegister}>
-                                    Registrarse
+                            <Grid>
+                                <Button type="submit" variant="contained" fullWidth disabled={isLoading}>
+                                    {isLoading ? <CircularProgress size={24} /> : "Iniciar sesión"}
                                 </Button>
                             </Grid>
                         </Grid>
@@ -139,20 +117,10 @@ const Login = () => {
                     </form>
                 )}
 
-                {step === "qr" && secretUrl && (
-                    <div style={{ textAlign: "center" }}>
-                        <QRCodeSVG value={secretUrl} />
-                        <p>Escanea este QR con Google Authenticator</p>
-                        <Button variant="contained" onClick={() => setStep("login")}>
-                            Regresar
-                        </Button>
-                    </div>
-                )}
-
                 {step === "otp" && (
                     <form onSubmit={verifyOTP}>
                         <Grid container spacing={3}>
-                            <Grid size={{xs:12}}>
+                            <Grid>
                                 <TextField
                                     label="Código OTP"
                                     name="otp"
@@ -164,9 +132,9 @@ const Login = () => {
                         </Grid>
 
                         <Grid container spacing={3} direction="column" justifyContent="flex-end" alignItems="center">
-                            <Grid size={{xs:12}}>
-                                <Button type="submit" variant="contained" color="primary" fullWidth>
-                                    Verificar
+                            <Grid>
+                                <Button type="submit" variant="contained" color="primary" fullWidth disabled={isLoading}>
+                                    {isLoading ? <CircularProgress size={24} /> : "Verificar"}
                                 </Button>
                             </Grid>
                         </Grid>
