@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
-const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
+const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP2;
 
-const S1Time = () => {
+const S1Level = () => {
   const [data, setData] = useState([]);
 
   const fetchData = () => {
-    fetch(`${WEBSERVICE_IP}/logs/time`)
+    fetch(`${WEBSERVICE_IP}/logs/level`)
       .then((response) => response.json())
       .then((data) => {
         const formattedData = Object.keys(data).map((key) => ({
-          time: `${key}s`,
+          level: key,
           count: data[key],
         }));
         setData(formattedData);
@@ -29,13 +29,13 @@ const S1Time = () => {
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="time" />
+        <XAxis dataKey="level" />
         <YAxis />
         <Tooltip />
-        <Bar dataKey="count" fill="#FF8042" />
+        <Bar dataKey="count" fill="#00C49F" />
       </BarChart>
     </ResponsiveContainer>
   );
 };
 
-export default S1Time;
+export default S1Level;
