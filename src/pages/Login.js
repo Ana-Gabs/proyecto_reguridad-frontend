@@ -42,7 +42,6 @@ const Login = () => {
             }
         }
 
-        // Validación para OTP
         if (step === "otp" && !formData.otp.trim()) {
             errors.otp = "El código OTP es obligatorio.";
             valid = false;

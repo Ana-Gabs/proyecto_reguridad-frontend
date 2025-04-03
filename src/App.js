@@ -7,6 +7,7 @@ import Index from './pages/Index';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
+import Logs from './pages/Logs'
 /*---------------------------------------------*/
 import './App.css';
 
@@ -26,6 +27,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/logs" element={<Logs />} />
           </Routes>
         </Router>
       </ThemeProvider>
