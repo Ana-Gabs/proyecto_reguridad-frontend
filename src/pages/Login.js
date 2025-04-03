@@ -5,35 +5,32 @@ import { Grid, Box, Button, TextField, CircularProgress, Typography } from "@mui
 import { PasswordField } from "../funccions/validations/Password"; // Assuming the custom password field is here.
 import "../styles/Login.css";
 
-//const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
-const WEBSERVICE_IP = "http://localhost:3001";
+const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
+//const WEBSERVICE_IP = "http://localhost:3001";
 
 const Login = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         emailOrUsername: "",
         password: "",
-        otp: "",  // Agregamos el campo OTP aquí
+        otp: "",  
     });
     const [mensaje, setMensaje] = useState("");
-    const [errores, setErrores] = useState({});  // Los errores se gestionarán por campo
-    const [step, setStep] = useState("login"); // Paso actual (login o otp)
-    const [isLoading, setIsLoading] = useState(false); // Cargando
+    const [errores, setErrores] = useState({});  
+    const [step, setStep] = useState("login"); 
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleBackClick = () => navigate(-1); // Volver al paso anterior
+    const handleBackClick = () => navigate(-1); 
 
-    // Función para manejar los cambios en los campos del formulario
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    // Validación de los campos del formulario
     const validateForm = () => {
         let valid = true;
         let errors = {};
 
-        // Validación para login
         if (step === "login") {
             if (!formData.emailOrUsername.trim()) {
                 errors.emailOrUsername = "Este campo es obligatorio.";
