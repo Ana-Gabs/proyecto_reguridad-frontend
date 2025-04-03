@@ -144,14 +144,17 @@ const Login = () => {
                                 error={!!errores.emailOrUsername}
                                 helperText={errores.emailOrUsername}
                             />
+                            <Grid size={{xs:12}}>
                             <PasswordField
                                 label="Contraseña"
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
+                                fullWidth
                                 error={!!errores.password}
                                 helperText={errores.password}
                             />
+                            </Grid>
                         </Grid>
 
                         <Grid container spacing={2} justifyContent="center">
@@ -168,7 +171,7 @@ const Login = () => {
                 {step === "otp" && (
                     <form onSubmit={verifyOTP}>
                         <Grid container spacing={3} justifyContent="center" alignItems="center">
-                            <Grid item>
+                            <Grid size={{}}>
                                 <TextField
                                     label="Código OTP"
                                     name="otp"
