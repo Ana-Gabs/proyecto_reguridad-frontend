@@ -10,9 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import EventIcon from "@mui/icons-material/Event";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import GdayH16x9 from "../../assets/images/g_day-h-16x9.png";
+import GdayH16x9 from "../../assets/images/gaby-h-16x9.png";
 import "../../styles/Header.css";
 import "../../styles/variables.css";
 
@@ -70,14 +68,8 @@ export default function Header() {
             <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/login" startIcon={<EventIcon />}>
               ACCESO
             </Button>
-            <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/calendar" startIcon={<EventIcon />}>
-              CALENDARIO
-            </Button>
-            <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/activities" startIcon={<ListAltIcon />}>
-              ACTIVIDADES
-            </Button>
-            <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/notifications" startIcon={<NotificationsNoneIcon />}>
-              NOTIFICACIONES
+            <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/logs" startIcon={<EventIcon />}>
+              LOGS
             </Button>
           </Box>
           <IconButton
@@ -119,14 +111,8 @@ export default function Header() {
           <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/login" startIcon={<EventIcon />}>
             ACCESO
           </Button>
-          <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/calendar" startIcon={<EventIcon />}>
-            CALENDARIO
-          </Button>
-          <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/activities" startIcon={<ListAltIcon />}>
-            ACTIVIDADES
-          </Button>
-          <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/notifications" startIcon={<NotificationsNoneIcon />}>
-            NOTIFICACIONES
+          <Button sx={{ color: "var(--primary-color)" }} component={Link} to="/logs" startIcon={<EventIcon />}>
+            LOGS
           </Button>
         </Box>
       )}
