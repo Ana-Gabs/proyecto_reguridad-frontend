@@ -1,0 +1,43 @@
+/* Estilo del contenedor principal */
+.logs-container {
+    background-color: var(--background-color);
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilo del título */
+.logs-title {
+    color: var(--primary-color);
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Contenedor de la cuadrícula */
+.grid-container {
+    display: grid;
+    gap: 20px;
+    width: 90%;
+    max-width: 1200px;
+    grid-template-columns: 1fr; /* Móvil: una columna */
+}
+
+/* Caja para cada gráfico */
+.chart-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Ajuste para pantallas grandes */
+@media (min-width: 768px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas grandes */
+    }
+}
