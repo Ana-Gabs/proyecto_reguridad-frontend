@@ -9,7 +9,7 @@ import axios from "axios";
 import { isValidPassword, isPasswordMatch, PasswordField } from '../funccions/validations/Password';
 import '../styles/Register.css';
 
-const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
+const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP2;
 //const WEBSERVICE_IP = "http://localhost:3001";
 const Registro = () => {
     const navigate = useNavigate();

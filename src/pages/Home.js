@@ -10,44 +10,45 @@ const Home = () => {
     return (
         <>
             <Header />
-            <Box sx={{ p: 3, textAlign: 'center' }}>
-                <Typography variant="h4" gutterBottom>
-                    Bienvenido a mi Proyecto de Seguridad
-                </Typography>
+            <Box className="home-container">
+                <Box className="home-box">
+                    <div className="intro-text">
+                        <h1>Bienvenido a mi Proyecto de Seguridad</h1>
+                    </div>
 
-                <Typography variant="h6">
-                    <strong>Alumno:</strong> TSU. Ana Gabriela Contreras Jiménez
-                </Typography>
-                <Typography variant="h6">
-                    <strong>Matrícula:</strong> 2022371069
-                </Typography>
-                <Typography variant="h6">
-                    <strong>Grupo:</strong> IDGS 11
-                </Typography>
-                <Typography variant="h6">
-                    <strong>Docente:</strong> M.C.C. Emmanuel Martínez Hernández
-                </Typography>
+                    <Typography className="subtitulo-letrero">
+                        <strong>Alumno:</strong> TSU. Ana Gabriela Contreras Jiménez
+                    </Typography>
+                    <Typography className="subtitulo-letrero">
+                        <strong>Matrícula:</strong> 2022371069
+                    </Typography>
+                    <Typography className="subtitulo-letrero">
+                        <strong>Grupo:</strong> IDGS 11
+                    </Typography>
+                    <Typography className="subtitulo-letrero">
+                        <strong>Docente:</strong> M.C.C. Emmanuel Martínez Hernández
+                    </Typography>
 
-                <Box sx={{ mt: 3 }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{ mr: 2 }}
-                        onClick={() => navigate('/logs')}
-                    >
-                        Ver Logs
-                    </Button>
+                    <Box className="home-buttons">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate('/logs')}
+                        >
+                            Ver Logs
+                        </Button>
 
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => {
-                            localStorage.removeItem('token');
-                            navigate('/login');
-                        }}
-                    >
-                        Cerrar sesión
-                    </Button>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => {
+                                localStorage.removeItem('token');
+                                navigate('/login');
+                            }}
+                        >
+                            Cerrar sesión
+                        </Button>
+                    </Box>
                 </Box>
             </Box>
         </>
