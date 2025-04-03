@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
-const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP;
+const WEBSERVICE_IP = process.env.REACT_APP_WEBSERVICE_IP2;
 
 const S1Time = () => {
   const [data, setData] = useState([]);
