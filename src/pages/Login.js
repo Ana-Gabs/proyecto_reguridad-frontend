@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Grid, Box, Button, TextField, CircularProgress, Typography } from "@mui/material";
 import { PasswordField } from "../funccions/validations/Password"; // Assuming the custom password field is here.
 import "../styles/Login.css";
@@ -13,14 +14,14 @@ const Login = () => {
     const [formData, setFormData] = useState({
         emailOrUsername: "",
         password: "",
-        otp: "",  
+        otp: "",
     });
     const [mensaje, setMensaje] = useState("");
-    const [errores, setErrores] = useState({});  
-    const [step, setStep] = useState("login"); 
+    const [errores, setErrores] = useState({});
+    const [step, setStep] = useState("login");
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleBackClick = () => navigate(-1); 
+    const handleBackClick = () => navigate(-1);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -56,16 +57,16 @@ const Login = () => {
         setIsLoading(true); // Empezar el estado de carga
         setMensaje(""); // Limpiar mensaje previo
         setErrores({});  // Limpiar errores previos
-    
+
         try {
             const res = await axios.post(`${WEBSERVICE_IP}/users/login`, {
                 emailOrUsername: formData.emailOrUsername,
                 password: formData.password,
             });
-    
+
             // Log para revisar la respuesta
             console.log(res.data);
-    
+
             if (res.data.requiresMFA) {
                 setStep("otp"); // Cambiar al paso OTP
             } else if (res.data.token) {
@@ -80,34 +81,34 @@ const Login = () => {
                 console.error("Detalles del error:", error.response.data);
             }
         } finally {
-            setIsLoading(false); 
+            setIsLoading(false);
         }
-    };    
+    };
 
     const verifyOTP = async (e) => {
         e.preventDefault();
-        if (!validateForm()) return; 
-    
-        setMensaje("");   
-        setErrores({});     
-    
+        if (!validateForm()) return;
+
+        setMensaje("");
+        setErrores({});
+
         try {
-            const res = await axios.post(`${WEBSERVICE_IP}/users/verify-otp`, 
+            const res = await axios.post(`${WEBSERVICE_IP}/users/verify-otp`,
                 {
-                  email: formData.emailOrUsername,
-                  token: formData.otp,
-                }, 
+                    email: formData.emailOrUsername,
+                    token: formData.otp,
+                },
                 {
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
-              );
-              
-    
+            );
+
+
             if (res.data.success) {
-                localStorage.setItem("token", res.data.token); 
-                navigate("/home"); 
+                localStorage.setItem("token", res.data.token);
+                navigate("/home");
             } else {
                 setMensaje("Código OTP incorrecto.");
             }
@@ -115,20 +116,20 @@ const Login = () => {
             setMensaje("Error al verificar OTP.");
             console.error(error);
         } finally {
-            setIsLoading(false);  
+            setIsLoading(false);
         }
     };
-    
+
     return (
         <div className="login-container">
             <div className="login-header">
-                <Button onClick={handleBackClick}>Back</Button>
+                <ArrowBackIcon className="back-arrow" onClick={handleBackClick} />
             </div>
 
             <Box className="login-box">
                 <div className="intro-text">
-                    <Typography variant="h4">¡Bienvenido de nuevo!</Typography>
-                    <Typography variant="h6" className="subtitulo-letrero">Inicia sesión para continuar</Typography>
+                    <h1>¡Bienvenido de nuevo!</h1>
+                    <h3 className="subtitulo-letrero">Inicia sesión para continuar</h3>
                 </div>
 
                 {step === "login" && (
@@ -154,7 +155,7 @@ const Login = () => {
                         </Grid>
 
                         <Grid container spacing={2} justifyContent="center">
-                            <Grid item>
+                            <Grid size={{}}>
                                 <Button type="submit" variant="contained" fullWidth disabled={isLoading}>
                                     {isLoading ? <CircularProgress size={24} /> : "Iniciar sesión"}
                                 </Button>
