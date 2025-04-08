@@ -18,7 +18,7 @@ const Home = () => {
                     </div>
 
                     <Typography className="subtitulo-letrero">
-                        <strong>Alumno:</strong> TSU. Ana Gabriela Contreras Jiménez
+                        <strong>Alumno:</strong> TSU. Ana Gabriela Contreras Jiménez XD
                     </Typography>
                     <Typography className="subtitulo-letrero">
                         <strong>Matrícula:</strong> 2022371069
@@ -32,7 +32,6 @@ const Home = () => {
                     <Typography className="subtitulo-letrero">
                         <strong>Programa:</strong> En el siguiente programa se puede apreciar una aplicación conectada con dos servidores distintos, para ver a través de las gráficas la diferencia entre un servidor sin rate limit y uno que sí lo tiene.
                     </Typography>
-
 
                     <Box className="home-buttons">
                         <Button
