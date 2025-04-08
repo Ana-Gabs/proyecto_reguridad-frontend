@@ -1,3 +1,4 @@
+// ./pages/Home.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Box, Typography } from '@mui/material';
